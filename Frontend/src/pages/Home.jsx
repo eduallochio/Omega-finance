@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { useState } from "react";
 
 const StockInfo = () => {
   const [ticker, setTicker] = useState("");
@@ -19,16 +18,16 @@ const StockInfo = () => {
       setLoading(true);
 
       const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker.toUpperCase()}`);
+      const result = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.error || "Erro ao buscar dados.");
+        setError(result.error || "Erro ao buscar dados. Tente novamente.");
         return;
       }
 
-      const result = await response.json();
       setData(result);
     } catch {
-      setError("Erro de conexão com o servidor.");
+      setError("Erro de conexão com o servidor. Verifique sua rede.");
     } finally {
       setLoading(false);
     }
