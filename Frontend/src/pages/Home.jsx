@@ -1,61 +1,12 @@
-import { useState } from "react";
+// src/pages/Home.jsx
 
-const StockInfo = () => {
-  const [ticker, setTicker] = useState("");
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const fetchData = async () => {
-    if (!ticker) {
-      setError("Por favor, insira um ticker válido.");
-      return;
-    }
-
-    try {
-      setError(null);
-      setData(null);
-      setLoading(true);
-
-      const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker.toUpperCase()}`);
-      const result = await response.json();
-
-      if (!response.ok) {
-        setError(result.error || "Erro ao buscar dados. Tente novamente.");
-        return;
-      }
-
-      setData(result);
-    } catch {
-      setError("Erro de conexão com o servidor. Verifique sua rede.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const Home = () => {
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Digite o ticker"
-        value={ticker}
-        onChange={(e) => setTicker(e.target.value)}
-      />
-      <button onClick={fetchData}>Buscar</button>
-      
-      {loading && <p>Carregando...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {data && (
-        <div>
-          <h3>Informações da Ação</h3>
-          <p><strong>Ticker:</strong> {data.ticker}</p>
-          <p><strong>Preço:</strong> R$ {data.preco.toFixed(2)}</p>
-          <p><strong>Variação:</strong> {data.variacao.toFixed(2)}%</p>
-          <p><strong>Volume:</strong> {data.volume}</p>
-        </div>
-      )}
+    <div className="flex justify-center items-center h-screen">
+      <h1 className="text-3xl font-semibold">Bem-vindo à Página Inicial</h1>
     </div>
   );
 };
 
-export default StockInfo;
+export default Home;
