@@ -1,67 +1,62 @@
 import { useState } from 'react';
-import { Button } from '../components/Button';
-import { Input } from '../components/Input';
-import { Card } from '../components/Card';
 
-export function Home() {
-  const [ticker, setTicker] = useState('');
+
+const StockInfo = () => {
+  const [ticker, setTicker] = useState("");
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [formError, setFormError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const fetchStockData = async () => {
-    // Validação: Verificar se o campo está vazio
-    if (!ticker.trim()) {
-      setFormError('O campo de ticker não pode estar vazio.');
+  const fetchData = async () => {
+    if (!ticker) {
+      setError("Por favor, insira um ticker válido.");
       return;
     }
 
-    // Limpar erros anteriores e iniciar a busca
-    setFormError(null);
-    setLoading(true);
-    setError(null);
-
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker}`);
+      setError(null);
+      setData(null);
+      setLoading(true);
+
+      const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker.toUpperCase()}`);
       if (!response.ok) {
-        throw new Error('Erro ao buscar dados');
+        const errorData = await response.json();
+        setError(errorData.error || "Erro ao buscar dados.");
+        return;
       }
+
       const result = await response.json();
       setData(result);
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError("Erro de conexão com o servidor.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <Card>
-        <h1 className="text-2xl font-bold mb-4">Consulta de Ações</h1>
-        <div className="flex space-x-2 mb-4">
-          <Input
-            placeholder="Digite o ticker (ex: PETR4)"
-            value={ticker}
-            onChange={(e) => setTicker(e.target.value)}
-          />
-          <Button onClick={fetchStockData}>Buscar</Button>
+    <div>
+      <input
+        type="text"
+        placeholder="Digite o ticker"
+        value={ticker}
+        onChange={(e) => setTicker(e.target.value)}
+      />
+      <button onClick={fetchData}>Buscar</button>
+      
+      {loading && <p>Carregando...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {data && (
+        <div>
+          <h3>Informações da Ação</h3>
+          <p><strong>Ticker:</strong> {data.ticker}</p>
+          <p><strong>Preço:</strong> R$ {data.preco.toFixed(2)}</p>
+          <p><strong>Variação:</strong> {data.variacao.toFixed(2)}%</p>
+          <p><strong>Volume:</strong> {data.volume}</p>
         </div>
-        {formError && <p className="text-red-500 mb-2">{formError}</p>}
-        {loading && <p>Carregando...</p>}
-        {error && <p className="text-red-500">{error}</p>}
-        {data && (
-          <div>
-            <p>
-              <strong>Ação:</strong> {data.ticker}
-            </p>
-            <p>
-              <strong>Preço:</strong> R$ {data.preco.toFixed(2)}
-            </p>
-          </div>
-        )}
-      </Card>
+      )}
     </div>
   );
-}
+};
+
+export default StockInfo;
