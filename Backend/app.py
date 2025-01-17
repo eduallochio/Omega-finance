@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import yfinance as yf
 
 app = Flask(__name__)
+CORS(app)  # Habilitar CORS para todas as rotas
 
 @app.route('/api/acao/<ticker>', methods=['GET'])
 def get_acao(ticker):
