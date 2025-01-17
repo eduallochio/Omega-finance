@@ -8,10 +8,20 @@ export function Home() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [formError, setFormError] = useState(null);
 
   const fetchStockData = async () => {
+    // Validação: Verificar se o campo está vazio
+    if (!ticker.trim()) {
+      setFormError('O campo de ticker não pode estar vazio.');
+      return;
+    }
+
+    // Limpar erros anteriores e iniciar a busca
+    setFormError(null);
     setLoading(true);
     setError(null);
+
     try {
       const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker}`);
       if (!response.ok) {
@@ -38,6 +48,7 @@ export function Home() {
           />
           <Button onClick={fetchStockData}>Buscar</Button>
         </div>
+        {formError && <p className="text-red-500 mb-2">{formError}</p>}
         {loading && <p>Carregando...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {data && (
