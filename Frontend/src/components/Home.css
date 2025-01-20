@@ -1,0 +1,34 @@
+.home {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .home h2 {
+    margin-bottom: 20px;
+  }
+  
+  .home table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .home table th,
+  .home table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .home table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .home table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .home table tr:hover {
+    background-color: #f1f1f1;
+  }
+  

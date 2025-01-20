@@ -1,14 +1,19 @@
-// src/pages/AcoesBrasileiras.jsx
+import  { useState } from "react";
 import "./AcoesBrasileiras.css";
-import { useState } from "react";
+import { useCarteira } from "../context/CarteiraContext";
 
 const AcoesBrasileiras = () => {
   const [ticker, setTicker] = useState("");
-  const [resultado, setResultado] = useState(null);
+  const [quantidade, setQuantidade] = useState("");
+  const [valorPago, setValorPago] = useState("");
+  const [dataCompra, setDataCompra] = useState("");
+  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const consultarAcao = async () => {
+  const { adicionarAcao } = useCarteira();
+
+  const fetchData = async () => {
     if (!ticker) {
       setError("Por favor, insira um ticker válido.");
       return;
@@ -16,23 +21,39 @@ const AcoesBrasileiras = () => {
 
     try {
       setError(null);
-      setResultado(null);
+      setData(null);
       setLoading(true);
 
-      const response = await fetch(`http://127.0.0.1:5000/api/acao/${ticker.toUpperCase()}`);
-      const data = await response.json();
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/acao/${ticker.toUpperCase()}`
+      );
+      const result = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Erro ao buscar dados. Tente novamente.");
+        setError(result.error || "Erro ao buscar dados. Tente novamente.");
         return;
       }
 
-      setResultado(data);
+      setData(result);
     } catch {
       setError("Erro de conexão com o servidor. Verifique sua rede.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddToCarteira = () => {
+    if (!ticker || !quantidade || !valorPago || !dataCompra) {
+      alert("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    adicionarAcao({ ticker, quantidade, valorPago, dataCompra });
+    alert("Ação adicionada à carteira com sucesso!");
+    setTicker("");
+    setQuantidade("");
+    setValorPago("");
+    setDataCompra("");
   };
 
   return (
@@ -45,21 +66,47 @@ const AcoesBrasileiras = () => {
           value={ticker}
           onChange={(e) => setTicker(e.target.value.toUpperCase())}
         />
-        <button onClick={consultarAcao} disabled={loading}>
-          {loading ? "Consultando..." : "Consultar"}
-        </button>
+        <button onClick={fetchData}>Consultar</button>
       </div>
-
+      {loading && <p>Carregando...</p>}
       {error && <p className="error">{error}</p>}
-
-      {resultado && (
+      {data && (
         <div className="resultado">
-          <p><strong>Nome:</strong> {resultado.nome}</p>
-          <p><strong>Preço:</strong> R$ {resultado.preco}</p>
-          <p><strong>Variação:</strong> {resultado.variacao}</p>
-          <p><strong>Volume:</strong> {resultado.volume}</p>
+          <p><strong>Nome:</strong> {data.nome}</p>
+          <p><strong>Preço:</strong> R$ {data.preco}</p>
+          <p><strong>Variação:</strong> {data.variacao}</p>
+          <p><strong>Volume:</strong> {data.volume}</p>
         </div>
       )}
+
+      <div className="form adicionar-carteira">
+        <h3>Adicionar à Carteira</h3>
+        <input
+          type="text"
+          placeholder="Ticker"
+          value={ticker}
+          onChange={(e) => setTicker(e.target.value.toUpperCase())}
+        />
+        <input
+          type="number"
+          placeholder="Quantidade"
+          value={quantidade}
+          onChange={(e) => setQuantidade(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Valor Pago (R$)"
+          value={valorPago}
+          onChange={(e) => setValorPago(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="Data da Compra"
+          value={dataCompra}
+          onChange={(e) => setDataCompra(e.target.value)}
+        />
+        <button onClick={handleAddToCarteira}>Adicionar</button>
+      </div>
     </div>
   );
 };
