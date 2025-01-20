@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home';
 import AcoesBrasileiras from './pages/AcoesBrasileiras';
-import FloatMenu from "./components/sidebar/FloatMenu"; // Certifique-se de que o caminho está correto
+import Dashboard from "./components/sidebar/Dashboard"; // Certifique-se de que o caminho está correto
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         </Routes>
 
         {/* Menu Flutuante */}
-        <FloatMenu />
+        <Dashboard />
       </div>
     </Router>
   );

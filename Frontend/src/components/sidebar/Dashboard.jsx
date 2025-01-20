@@ -1,9 +1,9 @@
-// src/components/sidebar/FloatMenu.jsx
+// src/components/sidebar/Dashboard.jsx
 
 import { Link } from 'react-router-dom';
-import './FloatMenu.css'; // Certifique-se de que o caminho está correto
+import './Dashboard.css'; // Certifique-se de que o caminho está correto
 
-const FloatMenu = () => {
+const Dashboard = () => {
   return (
     <div className="fixed">
       <nav>
@@ -14,4 +14,4 @@ const FloatMenu = () => {
   );
 };
 
-export default FloatMenu;
+export default Dashboard;
