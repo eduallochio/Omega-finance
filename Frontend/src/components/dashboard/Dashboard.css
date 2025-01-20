@@ -1,0 +1,38 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda a altura da janela */
+  width: 100vw; /* Ocupa toda a largura da janela */
+  overflow: hidden; /* Evita barras de rolagem desnecessárias */
+}
+
+.dashboard-header {
+  flex: 0 0 auto; /* Mantém o header com altura fixa */
+  background-color: #f8f9fa; /* Cor de fundo do cabeçalho */
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-content {
+  flex: 1 1 auto; /* Permite que o conteúdo ocupe o espaço restante */
+  overflow-y: auto; /* Ativa a rolagem se necessário */
+  padding: 1rem;
+  background-color: #fff; /* Cor de fundo do conteúdo */
+}
+
+.dashboard-sidebar {
+  flex: 0 0 250px; /* Largura fixa para a barra lateral */
+  background-color: #343a40; /* Cor de fundo da sidebar */
+  color: #fff;
+  padding: 1rem;
+  height: 100%; /* Ocupa toda a altura */
+}
+.dashboard-content {
+  display: flex;
+}
+
+.dashboard-main {
+  flex: 1; /* O conteúdo principal ocupa o espaço restante */
+  padding: 1rem;
+  overflow-y: auto; /* Permite rolagem se necessário */
+}
