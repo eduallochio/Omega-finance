@@ -1,8 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
 
 const CarteiraContext = createContext();
 
+// Hook personalizado para acessar o contexto
+export const useCarteira = () => {
+  const context = useContext(CarteiraContext);
+  if (!context) {
+    throw new Error("useCarteira deve ser usado dentro de um CarteiraProvider.");
+  }
+  return context;
+};
+
+// Provedor do contexto
 export const CarteiraProvider = ({ children }) => {
   const [carteira, setCarteira] = useState([]);
 
@@ -20,6 +30,3 @@ export const CarteiraProvider = ({ children }) => {
 CarteiraProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-// Exportar o contexto
-export default CarteiraContext;
