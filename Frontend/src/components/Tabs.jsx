@@ -14,6 +14,9 @@ const Tabs = () => {
       <NavLink to="/relatorios" className="tab-link" activeClassName="active">
         Relatórios
       </NavLink>
+      <NavLink to="/carteira" className="tab-link" activeClassName="active">
+        Carteiras
+      </NavLink>
     </nav>
   );
 };
