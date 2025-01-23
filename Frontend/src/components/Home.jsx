@@ -6,14 +6,14 @@ const Home = () => {
   const { carteira } = useCarteira();
 
   return (
-    <div className="home">
-      <h2>Minha Carteira de Ações</h2>
+    <div className="home" style={{ padding: "20px", margin: "0", fontFamily: "Arial, sans-serif" }}>
+      <h2 style={{ marginBottom: "20px" }}>Minha Carteira de Ações</h2>
       {carteira.length === 0 ? (
         <p>Você ainda não adicionou ações à carteira.</p>
       ) : (
-        <table>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr>
+            <tr style={{ backgroundColor: "#f9f9f9", houver: { backgroundColor: "#f1f1f1" } }}>
               <th>Ticker</th>
               <th>Quantidade</th>
               <th>Valor Pago</th>

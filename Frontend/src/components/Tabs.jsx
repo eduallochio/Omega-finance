@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const Tabs = () => {
   return (
-    <nav className="tabs">
+    <nav className="tabs" style={{ display: 'flex', borderBottom: '1px solid #e1e4e8', backgroundColor: '#f6f8fa'}}>
       <NavLink to="/" className="tab-link" activeClassName="active">
         Home
       </NavLink>
